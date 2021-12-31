@@ -1,68 +1,46 @@
-const main = async () =>{
-    const [owner,randomPerson] = await hre.ethers.getSigners();
+const main = async () => {
     const waveContractFactory = await hre.ethers.getContractFactory("WavePortal");
-    
-    const waveContract = await waveContractFactory.deploy(({
-        value:hre.ethers.utils.parseEther("0.1"),
-    }));
+    const waveContract = await waveContractFactory.deploy({
+      value: hre.ethers.utils.parseEther("0.1"),
+    });
     await waveContract.deployed();
-
-    console.log("Contract deployed to :",waveContract.address)
-    console.log("Contract deployed by:",owner.address)
-
-
-// get contact balance
-contractBalance = await hre.ethers.provider.getBalance(waveContract.address);
-console.log("Contract Balance :",hre.ethers.utils.formatEther(contractBalance))
-
-
-    let waveCount;
-    waveCount = await waveContract.getTotalWaves();
-
-    let waveTxn = await waveContract.wave("Walla first wave")
+    console.log("Contract addy:", waveContract.address);
+  
+    let contractBalance = await hre.ethers.provider.getBalance(
+      waveContract.address
+    );
+    console.log(
+      "Contract balance:",
+      hre.ethers.utils.formatEther(contractBalance)
+    );
+  
+    /*
+     * Let's try two waves now
+     */
+    const waveTxn = await waveContract.wave("This is wave #1");
     await waveTxn.wait();
-
-    // getting contract balance and see what  happened
+  
+    const waveTxn2 = await waveContract.wave("This is wave #2");
+    await waveTxn2.wait();
+  
     contractBalance = await hre.ethers.provider.getBalance(waveContract.address);
     console.log(
       "Contract balance:",
       hre.ethers.utils.formatEther(contractBalance)
     );
   
-
-
-
-    
-
-
-    //simulating other people interacting with our smart  contract
-    // waveTxn = await waveContract.connect(randomPerson).wave("Wala third wave");
-    // await waveTxn.wait()
-
-    waveCount = await waveContract.getTotalWaves()
-
-    // getting number of waves per user
-    let wavesPerWaver;
-    wavesPerWaver = await waveContract.getWavesPerWaver();
-
-    //getting all waves
-    let allWaves = await waveContract.getAllWaves()
-    console.log(allWaves)
-
-    
-
-
-};
-
-const runMain = async  () =>{
+    let allWaves = await waveContract.getAllWaves();
+    console.log(allWaves);
+  };
+  
+  const runMain = async () => {
     try {
-        await  main()
-        process.exit(0);
-
+      await main();
+      process.exit(0);
     } catch (error) {
-        console.log(error)
-        process.exit(1)        
+      console.log(error);
+      process.exit(1);
     }
-}
-
-runMain()
+  };
+  
+  runMain();
