@@ -21,6 +21,8 @@ contract WavePortal {
      */
     Wave[] waves;
 
+    mapping(address =>uint256) public lastWavedAt;
+
     mapping(address => uint256) wavePerWaver;
 
     constructor() payable {
@@ -31,6 +33,16 @@ contract WavePortal {
     }
 
     function wave(string memory _message) public {
+        // we need to make sure the current timestamp is at least 15 minutes
+
+        require(
+            lastWavedAt[msg.sender] + 60 seconds < block.timestamp,
+            "wait 15m"
+            );
+        //update the currect timestamp mwe  have for the user
+
+        lastWavedAt[msg.sender] =block.timestamp;
+
         totalWaves += 1;
         console.log("%s has waved!", msg.sender);
 
