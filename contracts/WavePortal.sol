@@ -24,7 +24,7 @@ contract WavePortal {
 
     mapping(address => uint256) wavePerWaver;
 
-    constructor() {
+    constructor() payable {
         console.log("Building something on web3 tech , kudos buildspace");
     }
 

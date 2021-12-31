@@ -12,8 +12,8 @@ const main = async () =>{
 
 
 // get contact balance
-let contractBalance = await hre.ethers.provider.getBalance(waveContract.address)
-console.log("Contract Balance :",hre.ethers.utils.format(contractBalance))
+contractBalance = await hre.ethers.provider.getBalance(waveContract.address);
+console.log("Contract Balance :",hre.ethers.utils.formatEther(contractBalance))
 
 
     let waveCount;
